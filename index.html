@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Video Intro</title>
+  <style>
+    html, body {
+      margin: 0; padding: 0; height: 100%; overflow: hidden;
+      background: black;
+      font-family: sans-serif;
+      cursor: none; /* Hide cursor always */
+    }
+    #overlay {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: black;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 2.5rem;
+      z-index: 10;
+      user-select: none;
+    }
+    #bgVideo {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: none;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+  <div id="overlay">KLIKNI DA PUSTAS GLUPOSTI BRACE</div>
+
+  <video id="bgVideo" muted loop playsinline>
+    <source src="video1.mp4" type="video/mp4" />
+    Your browser does not support the video tag.
+  </video>
+
+  <script>
+    const overlay = document.getElementById('overlay');
+    const video = document.getElementById('bgVideo');
+
+    overlay.addEventListener('click', async () => {
+      try {
+        if (video.requestFullscreen) {
+          await video.requestFullscreen();
+        } else if (video.webkitRequestFullscreen) {
+          await video.webkitRequestFullscreen();
+        } else if (video.msRequestFullscreen) {
+          await video.msRequestFullscreen();
+        }
+
+        overlay.style.display = 'none';
+        video.style.display = 'block';
+
+        await video.play();
+      } catch (err) {
+        console.error('Error entering fullscreen or playing video:', err);
+      }
+    });
+
+    video.addEventListener('contextmenu', e => e.preventDefault());
+  </script>
+</body>
+</html>
